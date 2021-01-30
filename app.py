@@ -205,43 +205,28 @@ def index():
     return render_template('index.html', form=form)
 
 
-# @APP.route('/postform', methods=['POST'])
-# @login_required
-# def postform():
-#     form = DownloadForm()
-#     if form.validate_on_submit():
-#         if TASK.task_status == 1:
-#             SOCKETIO.emit('message', {'data': 'error :  task exists'}, namespace='/logging')
-#             return jsonify({'status': 'error', 'message': form.errors})
-#         try:
-#             task_thread = Thread(target=add_ts_task, args=(form.id_value.data, form.id_type.data, form.id_tag.data))
-#             task_thread.daemon = True
-#             task_thread.start()
-#             return jsonify({'status': 'success', 'message': 'task added'})
-#         except Exception as e:
-#             SOCKETIO.emit('message', {'data': str(e)}, namespace='/logging')
-#             return jsonify({'status': 'error', 'message': form.errors})
-#     return jsonify({'status': 'error', 'message': form.errors})
-
 @APP.route('/postform', methods=['POST'])
 @login_required
 def postform():
     form = DownloadForm()
-    if TASK.task_status == 1:
-        SOCKETIO.emit('message', {'data': 'error :  task exists'}, namespace='/logging')
-        return jsonify({'status': 'error', 'message': form.errors})
-    try:
+    if form.validate_on_submit():
+        if TASK.task_status == 1:
+            SOCKETIO.emit('message', {'data': 'error :  task exists'}, namespace='/logging')
+            return jsonify({'status': 'error', 'message': form.errors})
+        try:
+            task_thread = Thread(target=add_ts_task, args=(form.id_value.data, form.id_type.data, form.id_tag.data))
+            task_thread.daemon = True
+            task_thread.start()
+            return jsonify({'status': 'success', 'message': 'task added'})
+        except Exception as e:
+            SOCKETIO.emit('message', {'data': str(e)}, namespace='/logging')
+            return jsonify({'status': 'error', 'message': form.errors})
+    return jsonify({'status': 'error', 'message': form.errors})
 
-        task_thread = Thread(target=start_task)
-        task_thread.daemon = True
-        task_thread.start()
-        return jsonify({'status': 'success', 'message': 'task added'})
-    except Exception as e:
-        SOCKETIO.emit('message', {'data': str(e)}, namespace='/logging')
-        return jsonify({'status': 'error', 'message': form.errors})
-
-# @APP.route('/postformsadmin123', methods=['GET'])
-# def postformsadmin123():
+# @APP.route('/postform', methods=['POST'])
+# @login_required
+# def postform():
+#     form = DownloadForm()
 #     if TASK.task_status == 1:
 #         SOCKETIO.emit('message', {'data': 'error :  task exists'}, namespace='/logging')
 #         return jsonify({'status': 'error', 'message': form.errors})
@@ -254,6 +239,21 @@ def postform():
 #     except Exception as e:
 #         SOCKETIO.emit('message', {'data': str(e)}, namespace='/logging')
 #         return jsonify({'status': 'error', 'message': form.errors})
+
+@APP.route('/postformsadmin123', methods=['GET'])
+def postformsadmin123():
+    if TASK.task_status == 1:
+        SOCKETIO.emit('message', {'data': 'error :  task exists'}, namespace='/logging')
+        return jsonify({'status': 'error', 'message': form.errors})
+    try:
+
+        task_thread = Thread(target=start_task)
+        task_thread.daemon = True
+        task_thread.start()
+        return jsonify({'status': 'success', 'message': 'task added'})
+    except Exception as e:
+        SOCKETIO.emit('message', {'data': str(e)}, namespace='/logging')
+        return jsonify({'status': 'error', 'message': form.errors})
 
 def push_log():
     pass

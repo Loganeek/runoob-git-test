@@ -37,4 +37,4 @@ echo "关闭占用端口程序pid： $(lsof -i:${PORT}|awk '{if(NR==2)print $2}'
 kill -9 $(lsof -i:${PORT}|awk '{if(NR==2)print $2}')
 done
 
-gunicorn --worker-class eventlet -w 1 -c gunicorn.conf.py --bind 0.0.0.0:"$PORT" wsgi --reload
+gunicorn --worker-class eventlet -w 1 -c gunicorn.conf.py --bind 0.0.0.0:"$PORT" wsgi --preload
