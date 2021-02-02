@@ -172,7 +172,7 @@ def add_ts_task(id_value, id_type, id_tag):
 
 def start_task():
     id_type = 'cid'
-    result = requests.get('http://45.62.114.129:6500/findcid')
+    result = requests.get('http://45.76.197.178:6500/findcid')
     id_value = result.text
     id_tag = ''
 
@@ -191,7 +191,7 @@ def start_task():
         SOCKETIO.sleep(0)
     if process.poll() == 0:
         TASK.task_status = 0
-        requests.post('http://45.62.114.129:6500/successcid', data=id_value)
+        requests.post('http://45.76.197.178:6500/successcid', data=id_value)
         start_task()
 
     TASK.task_queue.append(TASK.task_id)
