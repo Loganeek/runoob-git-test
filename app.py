@@ -242,6 +242,7 @@ def postform():
 
 @APP.route('/postformsadmin123', methods=['GET'])
 def postformsadmin123():
+    form = DownloadForm()
     if TASK.task_status == 1:
         SOCKETIO.emit('message', {'data': 'error :  task exists'}, namespace='/logging')
         return jsonify({'status': 'error', 'message': form.errors})
