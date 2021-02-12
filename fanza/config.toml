@@ -13,7 +13,7 @@
 
 [download]
 ## 序列码，将其插入单引号之间
-serial = 'ZRKJO-JNHSN-CY2PI-I4ZRQ-YCN0Z'
+serial = ''
 ## 下载位置，相对和绝对路径：
 ##  - Windows: D:\test 或 D:/test
 ##  - macOS, Linux: /home/user/test
